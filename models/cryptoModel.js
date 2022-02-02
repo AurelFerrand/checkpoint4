@@ -13,7 +13,7 @@ const getOneById = (id) => {
 // READ ALL
 const getAll = () => {
   return new Promise((resolve, reject) => {
-    dbConnect.query("SELECT * FROM crypto", (err, results) => {
+    dbConnect.query("SELECT * FROM crytpo_data", (err, results) => {
       if (err) reject(err);
       else resolve(results);
     });
@@ -25,7 +25,7 @@ const createNew = (crypto) => {
   const { title, price, date, curent_price } = crypto;
   return new Promise((resolve, reject) => {
     dbConnect.query(
-      "INSERT INTO crypto (title, price, date, curent_price) VALUES (?,?,?,?)",
+      "INSERT INTO crytpo_data (title, price, date, curent_price) VALUES (?,?,?,?)",
       [title, price, date, curent_price],
       (err, result) => {
         if (err) reject(err);
@@ -40,7 +40,7 @@ const updateCrypto = (crypto) => {
   const { title, price, date, curent_price, id } = crypto;
   return new Promise((resolve, reject) => {
     dbConnect.query(
-      "UPDATE crypto SET title = ?, price = ?, date = ?, curent_price =? WHERE id = ?",
+      "UPDATE crytpo_data SET title = ?, price = ?, date = ?, curent_price =? WHERE id = ?",
       [title, price, date, curent_price, id],
       (err, result) => {
         if (err) reject(err);
@@ -52,10 +52,14 @@ const updateCrypto = (crypto) => {
 // DELETE
 const deleteById = (id) => {
   return new Promise((resolve, reject) => {
-    dbConnect.query("DELETE FROM crypto WHERE id = ?", id, (err, result) => {
-      if (err) reject(err);
-      else resolve(result.affectedRows);
-    });
+    dbConnect.query(
+      "DELETE FROM crytpo_data WHERE id = ?",
+      id,
+      (err, result) => {
+        if (err) reject(err);
+        else resolve(result.affectedRows);
+      }
+    );
   });
 };
 

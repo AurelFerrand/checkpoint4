@@ -8,7 +8,7 @@ const schemaCrypto = Joi.object({
   title: Joi.string().min(3).max(255).required(),
   date: Joi.date().required(),
   price: Joi.string().min(3).required(),
-  curent_price: Joi.number().integer().required(),
+  curent_price: Joi.string().min(3).required(),
 });
 
 router
