@@ -3,7 +3,7 @@ import dbConnect from "../config/db-config.js";
 // READ ONE
 const getOneById = (id) => {
   return new Promise((resolve, reject) => {
-    dbConnect.query("SELECT * FROM crypto WHERE id = ?", id, (err, result) => {
+    dbConnect.query("SELECT * FROM game WHERE id = ?", id, (err, result) => {
       if (err) reject(err);
       else resolve(result[0]);
     });
@@ -13,7 +13,7 @@ const getOneById = (id) => {
 // READ ALL
 const getAll = () => {
   return new Promise((resolve, reject) => {
-    dbConnect.query("SELECT * FROM crytpo_data", (err, results) => {
+    dbConnect.query("SELECT * FROM game", (err, results) => {
       if (err) reject(err);
       else resolve(results);
     });
@@ -25,7 +25,7 @@ const createNew = (crypto) => {
   const { title, price, date, curent_price } = crypto;
   return new Promise((resolve, reject) => {
     dbConnect.query(
-      "INSERT INTO crytpo_data (title, price, date, curent_price) VALUES (?,?,?,?)",
+      "INSERT INTO game (title, price, date, curent_price) VALUES (?,?,?,?)",
       [title, price, date, curent_price],
       (err, result) => {
         if (err) reject(err);
@@ -36,11 +36,11 @@ const createNew = (crypto) => {
 };
 
 // UPDATE
-const updateCrypto = (crypto) => {
+const updateGame = (crypto) => {
   const { title, price, date, curent_price, id } = crypto;
   return new Promise((resolve, reject) => {
     dbConnect.query(
-      "UPDATE crytpo_data SET title = ?, price = ?, date = ?, curent_price =? WHERE id = ?",
+      "UPDATE game SET title = ?, price = ?, date = ?, curent_price =? WHERE id = ?",
       [title, price, date, curent_price, id],
       (err, result) => {
         if (err) reject(err);
@@ -52,15 +52,11 @@ const updateCrypto = (crypto) => {
 // DELETE
 const deleteById = (id) => {
   return new Promise((resolve, reject) => {
-    dbConnect.query(
-      "DELETE FROM crytpo_data WHERE id = ?",
-      id,
-      (err, result) => {
-        if (err) reject(err);
-        else resolve(result.affectedRows);
-      }
-    );
+    dbConnect.query("DELETE FROM game WHERE id = ?", id, (err, result) => {
+      if (err) reject(err);
+      else resolve(result.affectedRows);
+    });
   });
 };
 
-export default { getAll, getOneById, deleteById, createNew, updateCrypto };
+export default { getAll, getOneById, deleteById, createNew, updateGame };

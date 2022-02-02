@@ -1,9 +1,9 @@
 import express from "express";
-import Crypto from "../models/cryptoModel.js";
+import Game from "../models/gameModel.js";
 import Joi from "joi";
 const router = express.Router();
 
-const schemaCrypto = Joi.object({
+const schemaGame = Joi.object({
   id: Joi.number().integer(),
   title: Joi.string().min(3).max(255).required(),
   date: Joi.date().required(),
@@ -15,9 +15,9 @@ router
   .get("/:id", async (req, res) => {
     const id = req.params.id;
     try {
-      const crypto = await Crypto.getOneById(id);
+      const game = await Game.getOneById(id);
 
-      res.json(crypto);
+      res.json(game);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
@@ -25,16 +25,16 @@ router
 
   .get("/", async (req, res) => {
     try {
-      const crypto = await Crypto.getAll();
+      const game = await Game.getAll();
 
-      res.json(crypto);
+      res.json(game);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
   })
 
   .put("/:id", async (req, res) => {
-    const crypto = {
+    const game = {
       id: req.params.id,
       title: req.body.title,
       date: req.body.date,
@@ -43,9 +43,9 @@ router
     };
 
     try {
-      const { error, value } = await schemaCrypto.validate(crypto);
-      const cryptoUpdate = await Crypto.updateCrypto(value);
-      if (cryptoUpdate) res.json(crypto);
+      const { error, value } = await schemaGame.validate(game);
+      const gameUpdate = await Game.updateGame(value);
+      if (gameUpdate) res.json(game);
       else res.status(422).json({ message: error.message });
     } catch (err) {
       res.status(500).json({ message: err.message });
@@ -53,7 +53,7 @@ router
   })
 
   .post("/", async (req, res) => {
-    const crypto = {
+    const game = {
       title: req.body.title,
       date: req.body.date,
       price: req.body.price,
@@ -61,11 +61,11 @@ router
     };
 
     try {
-      const { error, value } = await schemaCrypto.validate(crypto);
-      const cryptoCreate = await Crypto.createNew(value);
-      if (cryptoCreate) {
-        const newCrypto = await Crypto.getOneById(cryptoCreate);
-        res.json(newCrypto);
+      const { error, value } = await schemaGame.validate(game);
+      const gameCreate = await Game.createNew(value);
+      if (gameCreate) {
+        const newGame = await Game.getOneById(gameCreate);
+        res.json(newGame);
       } else res.status(422).json({ message: error.message });
     } catch (err) {
       res.status(500).json({ message: err.message });
@@ -75,9 +75,9 @@ router
   .delete("/:id", async (req, res) => {
     const id = req.params.id;
     try {
-      const cryptoDelete = await Crypto.deleteById(id);
-      if (cryptoDelete) {
-        res.json(`La crypto ${id} a bien été effacée`);
+      const gameDelete = await Game.deleteById(id);
+      if (gameDelete) {
+        res.json(`Le jeux ${id} a bien été effacée`);
       } else {
         res.status(422).json(`Une erreur est survenue lors de la suppression`);
       }
