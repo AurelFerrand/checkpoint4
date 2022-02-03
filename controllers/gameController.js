@@ -5,10 +5,8 @@ const router = express.Router();
 
 const schemaGame = Joi.object({
   id: Joi.number().integer(),
-  title: Joi.string().min(3).max(255).required(),
-  date: Joi.date().required(),
-  price: Joi.string().min(3).required(),
-  curent_price: Joi.string().min(3).required(),
+  name: Joi.string().min(1).required(),
+  slug_id: Joi.number().required(),
 });
 
 router
@@ -36,10 +34,8 @@ router
   .put("/:id", async (req, res) => {
     const game = {
       id: req.params.id,
-      title: req.body.title,
-      date: req.body.date,
-      price: req.body.price,
-      curent_price: req.body.curent_price,
+      name: req.body.name,
+      slug_id: req.body.slug_id,
     };
 
     try {
@@ -54,21 +50,19 @@ router
 
   .post("/", async (req, res) => {
     const game = {
-      title: req.body.title,
-      date: req.body.date,
-      price: req.body.price,
-      curent_price: req.body.curent_price,
+      name: req.body.name,
+      slug_id: req.body.slug_id,
     };
-
     try {
       const { error, value } = await schemaGame.validate(game);
       const gameCreate = await Game.createNew(value);
+
       if (gameCreate) {
         const newGame = await Game.getOneById(gameCreate);
         res.json(newGame);
       } else res.status(422).json({ message: error.message });
     } catch (err) {
-      res.status(500).json({ message: err.message });
+      res.json({ message: err.message }).status(500);
     }
   })
 

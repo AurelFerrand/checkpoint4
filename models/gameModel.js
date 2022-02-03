@@ -21,12 +21,12 @@ const getAll = () => {
 };
 
 // CREATE
-const createNew = (crypto) => {
-  const { title, price, date, curent_price } = crypto;
+const createNew = (game) => {
+  const { name, slug_id } = game;
   return new Promise((resolve, reject) => {
     dbConnect.query(
-      "INSERT INTO game (title, price, date, curent_price) VALUES (?,?,?,?)",
-      [title, price, date, curent_price],
+      "INSERT INTO game (name, slug_id ) VALUES (?, ?)",
+      [name, slug_id],
       (err, result) => {
         if (err) reject(err);
         else resolve(result.insertId);
@@ -36,12 +36,12 @@ const createNew = (crypto) => {
 };
 
 // UPDATE
-const updateGame = (crypto) => {
-  const { title, price, date, curent_price, id } = crypto;
+const updateGame = (game) => {
+  const { name, slug_id, id } = game;
   return new Promise((resolve, reject) => {
     dbConnect.query(
-      "UPDATE game SET title = ?, price = ?, date = ?, curent_price =? WHERE id = ?",
-      [title, price, date, curent_price, id],
+      "UPDATE game SET name = ?, slug_id = ? WHERE id = ?",
+      [name, slug_id, id],
       (err, result) => {
         if (err) reject(err);
         else resolve(result);
